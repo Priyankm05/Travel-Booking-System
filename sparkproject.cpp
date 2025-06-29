@@ -37,12 +37,8 @@ bool isValidDestination(const string& destination) {
 }
 
 
-
-
-
 class Booking {
 
-    
     string passengerName;
     long long int PhoneNo;
     int seatNo;
@@ -65,17 +61,7 @@ class Booking {
     }
 
    void inputDetails() {
-    do {
-    cout << "Enter Booking ID: ";
-    cin >> bookingID;
-
-    if (bookingID <= 0) {
-        cout << "Invalid Booking ID . Enter Again : ";
-    } else {
-        break;
-    }
-} while (true);
-
+ 
     do {
     cout << "Enter Name: ";
     cin.ignore();
@@ -231,6 +217,86 @@ class Booking {
         else
             cout << "Booking ID not found." << endl;
     }
+ static void displayAllTabular() {
+    ifstream file("bookings.txt");
+    string line;
+    cout << "\nBookingID | Name           | Phone       | Age | Destination | Seat\n";
+    cout << "---------------------------------------------------------------\n";
+    
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string id, name, phone, age, dest, seat;
+
+        getline(ss, id, ',');
+        getline(ss, name, ',');
+        getline(ss, phone, ',');
+        getline(ss, age, ',');
+        getline(ss, dest, ',');
+        getline(ss, seat, ',');
+
+        cout << id << "\t  " << name << "\t" << phone << "\t" << age << "\t" << dest << "\t" << seat << endl;
+    }
+    file.close();
+}
+
+    static void searchBooking() {
+    int choice;
+    string search;
+    cout << "Search by:\n1. Name\n2. Destination\nEnter choice: ";
+    cin >> choice;
+    cin.ignore();
+    cout << "Enter search text: ";
+    getline(cin, search);
+
+    ifstream file("bookings.txt");
+    string line;
+    bool found = false;
+
+    while (getline(file, line)) {
+        if ((choice == 1 && line.find(search) != string::npos) ||
+            (choice == 2 && line.find(search) != string::npos)) {
+            cout << line << endl;
+            found = true;
+        }
+    }
+
+    if (!found) {
+        cout << "No matching booking found.\n";
+    }
+
+    file.close();
+}
+
+
+    static void seatAvailability() {
+    bool booked[51] = {false}; 
+    ifstream file("bookings.txt");
+    string line;
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string temp;
+        int count = 0;
+        while (getline(ss, temp, ',')) {
+            count++;
+            if (count == 6) {  
+                int seat = stoi(temp);
+                if (seat >= 1 && seat <= 50)
+                    booked[seat] = true;
+            }
+        }
+    }
+    file.close();
+
+    cout << "\nSeat Availability (1-50):\n";
+    for (int i = 1; i <= 50; i++) {
+        if (booked[i])
+            cout << "Seat " << i << ": Booked\n";
+        else
+            cout << "Seat " << i << ": Available\n";
+    }
+}
+        
         
           
 };
@@ -239,7 +305,52 @@ class Booking {
 
 
 int main(){
-   
+    int choice;
+
+    do {
+        cout << "\n**** Travel Booking System ****\n";
+        cout << "1. Add Booking\n";
+        cout << "2. Show All Bookings\n";
+        cout << "3. Cancel Booking\n";
+        cout << "4. Edit Booking\n";
+        cout << "5. View Bookings\n";
+        cout << "6. Search Bookings\n";
+        cout << "7. Check Seat Availability\n";
+        cout << "8. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            Booking b;
+            b.inputDetails();
+            b.saveToFile();
+        } else if (choice == 2) {
+            Booking::showAllBookings();
+        } else if (choice == 3) {
+            int id;
+            cout << "Enter Booking ID to cancel: ";
+            cin >> id;
+            Booking::cancelBooking(id);
+        } else if (choice == 4) {
+            int id;
+            cout << "Enter Booking ID to edit: ";
+            cin >> id;
+            Booking::editBooking(id);
+        } else if (choice == 5) {
+            Booking::displayAllTabular();
+        } else if (choice == 6) {
+            Booking::searchBooking();
+        } else if (choice == 7) {
+            Booking::seatAvailability(); 
+        } else if (choice == 8) {
+            cout << "Exiting...\n";
+        } else {
+            cout << "Invalid choice.\n";
+        }
+
+    } while (choice != 8);
+
+    return 0;
    
    
 }
