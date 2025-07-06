@@ -37,8 +37,12 @@ bool isValidDestination(const string& destination) {
 }
 
 
+
+
+
 class Booking {
 
+    
     string passengerName;
     long long int PhoneNo;
     int seatNo;
@@ -61,7 +65,8 @@ class Booking {
     }
 
    void inputDetails() {
- 
+    
+
     do {
     cout << "Enter Name: ";
     cin.ignore();
@@ -98,18 +103,41 @@ class Booking {
     } while (true); 
 
 
-    do {
-    cout << "Enter Destination: ";
-    cin.ignore();
-    getline(cin, destination);
+  do {
+    cout << "Select Destination:\n";
+    cout << "1. Delhi\n";
+    cout << "2. Mumbai\n";
+    cout << "3. Chennai\n";
+    cout << "4. Bangalore\n";
+    cout << "5. Kolkata\n";
+    cout << "6. Amritsar\n";
+    cout << "7. Shimla\n";
+    cout << "8. Jaipur\n";
+    cout << "9. Jodhpur\n";
+    cout << "10. Dehradun\n";
+    cout << "Enter your choice (1-10): ";
 
+    int destChoice;
+    cin >> destChoice;
 
-    if (!isValidDestination(destination)) {
-        cout << "Invalid destination . Enter Again : ";
-    } else {
-        break;
+    switch (destChoice) {
+        case 1: destination = "Delhi"; break;
+        case 2: destination = "Mumbai"; break;
+        case 3: destination = "Chennai"; break;
+        case 4: destination = "Bangalore"; break;
+        case 5: destination = "Kolkata"; break;
+        case 6: destination = "Amritsar"; break;
+        case 7: destination = "Shimla"; break;
+        case 8: destination = "Jaipur"; break;
+        case 9: destination = "Jodhpur"; break;
+        case 10: destination = "Dehradun"; break;
+        default:
+            cout << "Invalid choice. Try again.\n";
+            continue;
     }
+    break;
 } while (true);
+
 
      do {
     cout << "Enter Seat Number: ";
@@ -128,7 +156,7 @@ class Booking {
     void saveToFile() {
         bookingID = getNextID();
         ofstream file("bookings.txt", ios::app);
-        file << bookingID << "," << passengerName << "," << destination << "," << seatNo << endl;
+        file << bookingID << "," << passengerName << "," << PhoneNo << "," << age << "," << destination << "," << seatNo << endl;
         file.close();
         cout << "Booking added successfully!" << endl;
     }
@@ -217,7 +245,8 @@ class Booking {
         else
             cout << "Booking ID not found." << endl;
     }
- static void displayAllTabular() {
+
+    static void displayAllTabular() {
     ifstream file("bookings.txt");
     string line;
     cout << "\nBookingID | Name           | Phone       | Age | Destination | Seat\n";
@@ -297,14 +326,12 @@ class Booking {
     }
 }
         
-        
           
 };
 
 
 
-
-int main(){
+int main() {
     int choice;
 
     do {
@@ -351,6 +378,4 @@ int main(){
     } while (choice != 8);
 
     return 0;
-   
-   
 }
