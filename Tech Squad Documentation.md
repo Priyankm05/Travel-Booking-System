@@ -1,2 +1,2 @@
 Travel Booking System
-[Tech squad Documentation.pdf](https://github.com/user-attachments/files/21144416/Tech.squad.Documentation.pdf)
+[View on Google Drive](https://drive.google.com/file/d/1mC5E9_Ez3PPcvzBOrxXN96uWEDVUFfm0/view?usp=sharing)
